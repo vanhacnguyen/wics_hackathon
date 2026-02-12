@@ -1,0 +1,18 @@
+name,categories,languages,address_line1,city,state,postal_code,phone,website,cost_notes,eligibility,lat,lng
+Second Harvest of Silicon Valley,food,"English,Spanish,Vietnamese,Chinese",750 Curtner Ave,San Jose,CA,95125,408-266-8866,https://www.shfb.org,Free,Open to all residents experiencing food insecurity,37.2975,-121.8649
+Second Harvest – Cypress Center,food,"English,Spanish,Vietnamese,Chinese",400 Brennan St,San Jose,CA,95136,408-266-8866,https://www.shfb.org,Free,Food distribution center,37.2589,-121.8522
+Sacred Heart Community Service,food,"English,Spanish,Vietnamese",1381 S 1st St,San Jose,CA,95110,408-278-2160,https://www.sacredheartcs.org,Free,Low-income individuals and families,37.3176,-121.8594
+Loaves & Fishes Family Kitchen,food,"English,Spanish",1351 Fifth St,San Jose,CA,95112,408-922-9085,https://www.loavesfishes.org,Free,Free hot meals,37.3411,-121.8897
+CityTeam San Jose,food,English,580 Charles St,San Jose,CA,95112,408-232-5600,https://www.cityteam.org/sanjose,Free,Meals and transitional support,37.3399,-121.889
+West Valley Community Services,food,"English,Spanish",10104 Vista Dr,Cupertino,CA,95014,408-255-8033,https://www.wvcommunityservices.org,Free,Residents of West Valley area,37.3197,-122.0416
+Sunnyvale Community Services,food,"English,Spanish",725 Kifer Rd,Sunnyvale,CA,94086,408-738-4321,https://svcommunityservices.org,Free,Sunnyvale residents,37.3726,-122.0256
+Gardner Health Services – CompreCare,health,"English,Spanish,Vietnamese",195 E Virginia St,San Jose,CA,95112,408-272-0100,https://gardnerhealthservices.org,Sliding scale,Primary and preventive care,37.3382,-121.8845
+Gardner Health Services – Downtown,health,"English,Spanish,Vietnamese",1583 Alum Rock Ave,San Jose,CA,95116,408-272-0100,https://gardnerhealthservices.org,Sliding scale,Community health clinic,37.3664,-121.8529
+Valley Health Center – Downtown,health,"English,Spanish,Vietnamese,Chinese",777 E Santa Clara St,San Jose,CA,95112,408-885-5000,https://health.sccgov.org,Free or sliding scale,Santa Clara County residents,37.343,-121.8766
+Valley Health Center – East Valley,health,"English,Spanish,Vietnamese",1993 McKee Rd,San Jose,CA,95116,408-885-5000,https://health.sccgov.org,Free or sliding scale,Primary care services,37.3742,-121.8349
+Valley Health Center – Bascom,health,"English,Spanish",976 Lenzen Ave,San Jose,CA,95126,408-885-5000,https://health.sccgov.org,Free or sliding scale,General medical services,37.3346,-121.9177
+Asian Americans for Community Involvement (AACI),health,"English,Vietnamese,Chinese,Tagalog",2400 Moorpark Ave,San Jose,CA,95128,408-975-2730,https://aaci.org,Sliding scale,Culturally competent healthcare,37.3169,-121.9353
+Indian Health Center of Santa Clara Valley,health,English,1333 Meridian Ave,San Jose,CA,95125,408-445-3400,https://www.indianhealthcenter.org,Sliding scale,"Open to all, culturally focused care",37.3042,-121.9108
+Planned Parenthood – San Jose,health,"English,Spanish",1691 The Alameda,San Jose,CA,95126,408-380-0500,https://www.plannedparenthood.org,Low cost,Reproductive and preventive care,37.3338,-121.917
+Bill Wilson Center – Medical Services,health,"English,Spanish",3490 The Alameda,Santa Clara,CA,95050,408-243-0222,https://www.billwilsoncenter.org,Free,Youth and family services,37.3524,-121.9389
+Roots Community Health Center,health,"English,Spanish",1231 McLaughlin Ave,San Jose,CA,95122,408-292-6377,https://www.rootsclinic.org,Sliding scale,Primary care and wellness,37.3329,-121.8356
