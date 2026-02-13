@@ -1,6 +1,8 @@
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.net.URLDecoder;
+
 
 /**
  * Usage examples:
@@ -15,7 +17,13 @@ import java.util.*;
  * - Outputs JSON to stdout: {"meta":{"count":N},"results":[{...}, ...]}
  */
 public class Backend {
-
+    private static String decode(String s) {
+        try {
+            return URLDecoder.decode(s, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            return s;
+        }
+    }
     private static class Filter {
         String key;
         String value;
@@ -42,7 +50,7 @@ public class Backend {
                         i++;
                         if (i + 1 >= args.length) dieJson("Missing value after -value");
                         String value = args[++i];
-                        filters.add(new Filter(key, value));
+                        filters.add(new Filter(key, decode(value)));
                     } else {
                         dieJson("Expected -value after -key " + key);
                     }
