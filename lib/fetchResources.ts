@@ -16,7 +16,7 @@ export async function fetchResources(params: {
   category?: string;
   language?: string;
 }) {
-  const base = "https://uglydog.io/cgi-bin/hello.cgi";
+  const base = "https://uglydog.io/cgi-bin/hack.cgi";
 
   const url = new URL(base);
   if (params.city) url.searchParams.set("city", params.city);
