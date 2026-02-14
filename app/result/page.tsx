@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { RESOURCES } from "./csvdata.js";
+import { RESOURCES } from "./csvdata2.js";
 
 export default function ResultsPage() {
   const searchParams = useSearchParams();

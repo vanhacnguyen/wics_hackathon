@@ -38,7 +38,7 @@ export default function SearchPage() {
     // Navigate to the new page with query parameters
     // Example: /results?city=San%20Jose&category=food&lang=English
     const params = new URLSearchParams({ city, category, lang });
-    router.push(`/results?${params.toString()}`);
+    router.push(`/result`);
   }
 
   return (
