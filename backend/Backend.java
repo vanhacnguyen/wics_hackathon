@@ -116,12 +116,22 @@ public class Backend {
         // For fields that are comma-separated lists, match by token containment.
         // (languages: "English,Spanish,Vietnamese")
         if (key.equals("languages") || key.equals("categories") || key.equals("tags")) {
-            List<String> tokens = splitCommaTokens(c);
-            for (String t : tokens) {
-                if (t.equalsIgnoreCase(w)) return true;
+
+            // Tokens from CSV cell
+            List<String> cellTokens = splitCommaTokens(c);
+
+            // Tokens from query/filter value (supports "food,health")
+            List<String> wantedTokens = splitCommaTokens(want);
+
+            // OR match: if ANY wanted token exists in cell
+            for (String wantToken : wantedTokens) {
+                for (String cellToken : cellTokens) {
+                    if (cellToken.equalsIgnoreCase(wantToken)) {
+                        return true;
+                    }
+                }
             }
-            // also allow partial containment fallback (helpful if data is messy)
-            return cLow.contains(wLow);
+            return false;
         }
 
         // For city/state/postal_code: prefer exact match (case-insensitive)
