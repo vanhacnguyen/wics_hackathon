@@ -49,7 +49,7 @@ export default function HomePage() {
             </button>
         </section>
 
-        {/* Bottom subtle bar like the screenshot */}
+        {/* Bottom subtle bar */}
         <div className="h-10 w-full bg-slate-400/70" />
         </main>
     );

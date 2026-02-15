@@ -17,14 +17,14 @@ export default function AboutPage() {
       </section>
 
       {/* CONTENT */}
-      <section className="mx-auto max-w-6xl px-7 py-14">
+      <section className="mx-auto max-w-6xl px-6 py-14">
         {/* Mission & Vision */}
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-semibold text-slate-900">
             Mission &amp; Vision
           </h2>
 
-          <div className="mt-6 space-y-4 text-base leading-relaxed text-slate-700">
+          <div className="mt-6 space-y-4 text-lg text-base leading-relaxed text-slate-700">
             <p>
               Our mission is to make essential community resources easier to find
               for immigrants and low-income individuals.

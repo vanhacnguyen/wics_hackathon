@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap, CircleMarker } from "react-leaflet";
 import L from "leaflet";
 
@@ -20,7 +20,7 @@ type Item = {
   lng?: number | string;
 };
 
-// Fix default marker icons (common issue in Next)
+// Fix default marker icons
 const DefaultIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
   iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
@@ -78,12 +78,19 @@ export default function ResourceMap({
   city,
   items,
   userPos,
+  selectedKey,
+  getKey,
 }: {
   city: string;
   items: Item[];
   userPos?: { lat: number; lng: number } | null;
+  selectedKey?: string | null;
+  getKey?: (item: Item) => string;
 }) {
   const center = useMemo(() => CITY_CENTER[city] ?? CITY_CENTER["San Jose"], [city]);
+  const keyOf = (it: Item) =>
+    getKey?.(it) ?? `${it.name}|${it.address_line1 ?? ""}|${it.postal_code ?? ""}|${it.city}`;
+  const markerRefs = useRef<Record<string, L.Marker | null>>({});
 
   const markers = useMemo(() => {
     return (items ?? [])
@@ -94,6 +101,23 @@ export default function ResourceMap({
       }))
       .filter((it) => Number.isFinite(it.latNum) && Number.isFinite(it.lngNum));
   }, [items]);
+
+  useEffect(() => {
+    if (!selectedKey) {
+      Object.values(markerRefs.current).forEach((m) => {m?.closePopup(); });
+      return;
+    }
+    const m = markerRefs.current[selectedKey];
+    if (!m) return;
+
+    m.openPopup();
+
+    const map = (m as any)._map as L.Map | undefined;
+    if (map) {
+      map.flyTo(m.getLatLng(), Math.max(map.getZoom(), 13), { duration: 0.6 });
+    }
+  }, [selectedKey]);
+
 
   const points = useMemo<[number, number][]>(() => markers.map((m) => [m.latNum as number, m.lngNum as number]), [markers]);
 
@@ -130,9 +154,15 @@ export default function ResourceMap({
         {markers.map((it, idx) => {
             const cat = Array.isArray(it.categories) ? it.categories.join(", ") : "";
             const addr = it.address_line1 ?? "";
-
+            const key = keyOf(it);
             return (
-                <Marker key={`${it.name}-${idx}`} position={[it.latNum as number, it.lngNum as number]}>
+              <Marker
+                key={key}
+                position={[it.latNum as number, it.lngNum as number]}
+                ref={(ref) => {
+                  markerRefs.current[key] = ref;
+                }}
+              >
                 <Popup>
                     <div style={{ minWidth: 220 }}>
                     <div style={{ fontWeight: 700, marginBottom: 4 }}>{it.name}</div>
@@ -154,7 +184,7 @@ export default function ResourceMap({
                     ) : null}
                     </div>
                 </Popup>
-                </Marker>
+              </Marker>
             );
         })}
 

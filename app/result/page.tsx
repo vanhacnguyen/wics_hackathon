@@ -49,9 +49,11 @@ export default function ResultsPage() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
   const [previewText, setPreviewText] = useState<string | null>(null);
-    const [userPos, setUserPos] = useState<{ lat: number; lng: number } | null>(null);
+  const [userPos, setUserPos] = useState<{ lat: number; lng: number } | null>(null);
   const [locLoading, setLocLoading] = useState(false);
   const [locErr, setLocErr] = useState<string | null>(null);
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+
 
   function toNum(x: number | string | undefined) {
     const n = typeof x === "string" ? Number(x) : x;
@@ -85,7 +87,6 @@ export default function ResultsPage() {
       },
       (err) => {
         setLocLoading(false);
-        // friendly messages
         if (err.code === err.PERMISSION_DENIED) setLocErr("Location permission denied.");
         else if (err.code === err.TIMEOUT) setLocErr("Location request timed out.");
         else setLocErr("Could not get your location.");
@@ -93,6 +94,11 @@ export default function ResultsPage() {
       { enableHighAccuracy: false, timeout: 8000, maximumAge: 60_000 }
     );
   }
+
+  function resourceKey(r: Resource) {
+    return `${r.name}|${r.address_line1 ?? ""}|${r.postal_code ?? ""}|${r.city ?? ""}`;
+  }
+
 
   const apiUrl = useMemo(() => {
     if (!city && !category && !lang) return null;
@@ -278,6 +284,7 @@ export default function ResultsPage() {
                 {(displayData as any[]).map((item: any, i) => {
                   const firstCat = item.categories?.[0] ?? "No Category Match";
                   const zip = item.postal_code ?? "—";
+                  const key = resourceKey(item);
                   const isOpen = expanded.has(i);
 
                   return (
@@ -298,7 +305,19 @@ export default function ResultsPage() {
 
                         <div className="flex items-center gap-4">
                           <button
-                            onClick={() => toggleDetails(i)}
+                            onClick={() => {
+                              const isCurrentlyOpen = expanded.has(i);
+
+                              toggleDetails(i);
+
+                              if (isCurrentlyOpen) {
+                                // Hide Details → clear selection
+                                setSelectedKey(null);
+                              } else {
+                                // View Details → select this resource
+                                setSelectedKey(key);
+                              }
+                            }}
                             className="flex items-center gap-2 rounded-sm bg-lime-200 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-lime-300"
                           >
                             {isOpen ? "Hide Details" : "View Details"}
@@ -361,7 +380,14 @@ export default function ResultsPage() {
           {/* RIGHT: map (sticky) */}
           <aside className="lg:sticky lg:top-[92px]">
             <div className="h-[420px] overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-200 lg:h-[calc(100vh-160px)]">
-              <ResourceMap city={mapCity} items={displayData as any} userPos={userPos} />
+              <ResourceMap
+                  city={mapCity}
+                  items={displayData as any}
+                  userPos={userPos}
+                  selectedKey={selectedKey}
+                  getKey={(r: any) => resourceKey(r)}
+                />
+
             </div>
 
             <p className="mt-3 text-xs text-slate-500">

@@ -6,7 +6,7 @@ Loaves & Fishes Family Kitchen,food,"English,Spanish",1351 Fifth St,San Jose,CA,
 CityTeam San Jose,food,English,580 Charles St,San Jose,CA,95112,408-232-5600,https://www.cityteam.org/sanjose,Free,Meals and transitional support,37.3399,-121.889
 West Valley Community Services,"food, shelter, mental health","English,Spanish",10104 Vista Dr,Cupertino,CA,95014,408-255-8033,https://www.wvcommunityservices.org,Free,Residents of West Valley area,37.3197,-122.0416
 Sunnyvale Community Services,food,"English,Spanish",725 Kifer Rd,Sunnyvale,CA,94086,408-738-4321,https://svcommunityservices.org,Free,Sunnyvale residents,37.3726,-122.0256
-Gardner Health Services at CompreCare,health,"English,Spanish,Vietnamese",195 E Virginia St,San Jose,CA,95112,408-272-0100,https://gardnerhealthservices.org,Sliding scale,Primary and preventive care,37.3382,-121.8845
+Gardner Health Services – CompreCare,health,"English,Spanish,Vietnamese",195 E Virginia St,San Jose,CA,95112,408-272-0100,https://gardnerhealthservices.org,Sliding scale,Primary and preventive care,37.3382,-121.8845
 Gardner Health Services at Downtown,health,"English,Spanish,Vietnamese",1583 Alum Rock Ave,San Jose,CA,95116,408-272-0100,https://gardnerhealthservices.org,Sliding scale,Community health clinic,37.3664,-121.8529
 Valley Health Center at Downtown,health,"English,Spanish,Vietnamese,Chinese",777 E Santa Clara St,San Jose,CA,95112,408-885-5000,https://health.sccgov.org,Free or sliding scale,Santa Clara County residents,37.343,-121.8766
 Valley Health Center at East Valley,health,"English,Spanish,Vietnamese",1993 McKee Rd,San Jose,CA,95116,408-885-5000,https://health.sccgov.org,Free or sliding scale,Primary care services,37.3742,-121.8349
@@ -27,18 +27,17 @@ Vietnamese American Service Center (VASC),"health, mental health, food, legal, e
 Family Supportive Housing,shelter,"English,Spanish",692 N King Rd,San Jose,CA,95133,408-926-8885,https://www.familysupportivehousing.org,Free,Homeless families,37.3632,-121.8524
 Salvation Army Silicon Valley,"food, shelter","English,Spanish",359 N 4th St,San Jose,CA,95112,408-282-1000,https://siliconvalley.salvationarmy.org/,Free,Low-income,37.3416,-121.895
 Santa Clara County Social Services Agency,"food, housing, financial assistance","English,Spanish,Vietnamese",333 W Julian St,San Jose,CA,95110,408-758-3800,https://ssa.santaclaracounty.gov/home,Free,Income-based,37.3394,-121.897
-Sourcewise,"seniors, caregiver support","English,Spanish,Vietnamese",3100 De La Cruz Blvd,Santa Clara,CA,95054,408-350-3200,https://www.mysourcewise.com,Free,Seniors 60+,37.3931,-121.9432
-Jewish Family Services SV,"counseling, seniors, financial assistance","English,Russian",14855 Oka Rd Ste 202,Los Gatos,CA,95032,408-556-0600,https://www.jfssv.org,Sliding scale,Open to all,37.2581,-121.9653
-American Red Cross Silicon Valley,"disaster relief, emergency assistance","English,Spanish",,San Jose,CA,95134,408-577-1000,https://www.redcross.org,Free,Disaster victims,37.3892,-121.931
-Foothill College SparkPoint,"food, financial coaching, public benefits","English,Spanish",12345 El Monte Rd,Los Altos Hills,CA,94022,650-949-7241,https://foothill.edu,Free services,"Currently enrolled students, low-income households",37.3615,-122.1251
-Palo Alto Community Services,"food,financial assistance,housing","English,Spanish",1149 Weeks St,Palo Alto,CA,94303,650-321-9709,https://www.pacssv.org,Free services,"Santa Clara County residents, income ≤80% AMI",37.4494,-122.1121
-Sunnyvale Senior Center,"seniors,meals,community","English,Spanish",550 E Remington Dr,Sunnyvale,CA,94087,408-730-7360,https://sunnyvale.ca.gov,Free/low-cost programs,Adults age 50+,37.3516,-122.0363
-Mountain View Senior Center,"seniors,meals,community","English,Spanish",266 Escuela Ave,Mountain View,CA,94040,650-903-6330,https://mountainview.gov,Free/low-cost programs,Adults age 55+,37.3894,-122.087
-Cupertino Senior Center,"seniors,meals,wellness","English,Mandarin",21251 Stevens Creek Blvd,Cupertino,CA,95014,408-777-3150,https://cupertino.org,Low-cost membership,Adults age 50+,37.3229,-122.0322
+Sourcewise,seniors,"English,Spanish,Vietnamese",3100 De La Cruz Blvd,Santa Clara,CA,95054,408-350-3200,https://www.mysourcewise.com,Free,Seniors 60+,37.3931,-121.9432
+Jewish Family Services SV,"seniors, financial assistance","English,Russian",14855 Oka Rd Ste 202,Los Gatos,CA,95032,408-556-0600,https://www.jfssv.org,Sliding scale,Open to all,37.2581,-121.9653
+Foothill College SparkPoint,food,"English,Spanish",12345 El Monte Rd,Los Altos Hills,CA,94022,650-949-7241,https://foothill.edu,Free services,"Currently enrolled students, low-income households",37.3615,-122.1251
+Palo Alto Community Services,"food,financial assistance","English,Spanish",1149 Weeks St,Palo Alto,CA,94303,650-321-9709,https://www.pacssv.org,Free services,"Santa Clara County residents, income ≤80% AMI",37.4494,-122.1121
+Sunnyvale Senior Center,"seniors,community","English,Spanish",550 E Remington Dr,Sunnyvale,CA,94087,408-730-7360,https://sunnyvale.ca.gov,Free/low-cost programs,Adults age 50+,37.3516,-122.0363
+Mountain View Senior Center,"seniors,community","English,Spanish",266 Escuela Ave,Mountain View,CA,94040,650-903-6330,https://mountainview.gov,Free/low-cost programs,Adults age 55+,37.3894,-122.087
+Cupertino Senior Center,seniors,"English,Mandarin",21251 Stevens Creek Blvd,Cupertino,CA,95014,408-777-3150,https://cupertino.org,Low-cost membership,Adults age 50+,37.3229,-122.0322
 Campbell Community Services,financial assistance,"English,Spanish",70 N 1st St,Campbell,CA,95008,408-866-2100,https://campbellca.gov,Free/limited funds,Campbell residents meeting income guidelines,37.2872,-121.95
 Los Gatos Senior Center,"seniors, food",English,208 E Main St,Los Gatos,CA,95030,408-354-1514,https://losgatosca.gov,Free/low-cost programs,Adults age 55+,37.2226,-121.9831
 Saratoga Community Services,financial assistance,English,13777 Fruitvale Ave,Saratoga,CA,95070,408-868-1249,https://saratoga.ca.us,Free/limited funds,Saratoga residents in need,37.2638,-122.023
 Los Altos Community Services,financial assistance,English,97 Hillview Ave,Los Altos,CA,94022,650-947-2700,https://losaltosca.gov,Free services,"Los Altos residents, income-based",37.3852,-122.1141
 Morgan Hill Community & Cultural Center,family support,"English,Spanish",17000 Monterey Rd,Morgan Hill,CA,95037,408-782-0008,https://morganhill.ca.gov,Free/low-cost programs,Morgan Hill residents,37.1297,-121.6544
-Community Health Awareness Council (CHAC),"mental health,youth,family support","English,Spanish",590 W El Camino Real,Mountain View,CA,94040,650-965-2020,https://chacmv.org,Sliding scale,"Children, teens, and families, insurance accepted",37.3875,-122.0865
+Community Health Awareness Council (CHAC),"mental health,family support","English,Spanish",590 W El Camino Real,Mountain View,CA,94040,650-965-2020,https://chacmv.org,Sliding scale,"Children, teens, and families, insurance accepted",37.3875,-122.0865
 Indian Health Center,health,"English,Spanish",1333 Meridian Ave,San Jose,CA,95125,408-445-3400,https://www.indianhealthcenter.org,Sliding scale,Open to all,37.3034,-121.9135
