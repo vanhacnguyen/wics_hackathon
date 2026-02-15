@@ -1,38 +1,78 @@
 import { NextResponse } from "next/server";
 
+const UPSTREAM = "https://uglydog.io/cgi-bin/hack.cgi";
+
 export async function GET(req: Request) {
-  const url = new URL(req.url);
+  const incoming = new URL(req.url);
 
-  const city = url.searchParams.get("city") ?? "";
-  const category = url.searchParams.get("category") ?? "";
-  const lang = url.searchParams.get("lang") ?? "";
+  const city = incoming.searchParams.get("city") ?? "";
 
-  // CGI endpoint
-  const upstream = new URL("https://uglydog.io/cgi-bin/hack.cgi");
-  if (city) upstream.searchParams.set("city", city);
-  if (category) upstream.searchParams.set("category", category);
-  if (lang) upstream.searchParams.set("lang", lang);
+  const category =
+    incoming.searchParams.get("category") ??
+    incoming.searchParams.get("categories") ??
+    "";
 
-  const res = await fetch(upstream.toString(), { cache: "no-store" });
-  const contentType = res.headers.get("content-type") || "";
+  const lang =
+    incoming.searchParams.get("language") ??
+    incoming.searchParams.get("languages") ??
+    incoming.searchParams.get("lang") ??
+    "";
 
-  // If upstream is already JSON, just pass it through
-  if (contentType.includes("application/json")) {
-    const data = await res.json();
-    return NextResponse.json(data);
+  // ✅ No params → return empty JSON (never HTML)
+  if (!city && !category && !lang) {
+    return NextResponse.json({
+      meta: { count: 0, note: "No filters provided. Add ?city=...&category=...&lang=..." },
+      results: [],
+    });
   }
 
-  // Otherwise, it’s still in "preview mode" (returns text/html)
-  const text = await res.text();
+  const upstream = new URL(UPSTREAM);
+  if (city) upstream.searchParams.set("city", city);
+  if (category) upstream.searchParams.set("category", category);
+  if (lang) upstream.searchParams.set("language", lang);
 
-  // Return a consistent JSON shape so frontend can build now
-  return NextResponse.json({
-    meta: {
-      count: 0,
-      upstream_content_type: contentType,
-      note: "Upstream not returning JSON yet (preview mode). Showing upstream text.",
-    },
-    results: [],
-    debug: { upstream: upstream.toString(), text },
-  });
+  try {
+    const r = await fetch(upstream.toString(), {
+      cache: "no-store",
+      headers: { Accept: "application/json" },
+    });
+
+    const ct = r.headers.get("content-type") || "";
+    const text = await r.text();
+
+    // ✅ Try parse JSON even if content-type is wrong (common for CGI)
+    try {
+      const parsed = JSON.parse(text);
+
+      // If upstream returns { meta, results } you're good.
+      // If it returns something else, still forward it so you can see it.
+      return NextResponse.json(parsed, { status: 200 });
+    } catch {
+      // Upstream not JSON → return debug but keep status 200 so frontend doesn't hard-fail
+      return NextResponse.json({
+        meta: {
+          count: 0,
+          upstream_url: upstream.toString(),
+          upstream_status: r.status,
+          upstream_content_type: ct,
+          note: "Upstream response was not valid JSON. See preview.",
+        },
+        results: [],
+        upstream_preview: text.slice(0, 1200),
+      });
+    }
+  } catch (e: any) {
+    // Also return 200 with debug JSON (less annoying in browser)
+    return NextResponse.json({
+      meta: {
+        count: 0,
+        upstream_url: upstream.toString(),
+        upstream_status: 0,
+        upstream_content_type: "none",
+        note: "Failed to reach upstream (network issue or blocked).",
+      },
+      results: [],
+      error: String(e?.message || e),
+    });
+  }
 }
