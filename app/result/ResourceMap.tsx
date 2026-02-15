@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, CircleMarker } from "react-leaflet";
 import L from "leaflet";
 
 type Item = {
@@ -46,28 +46,42 @@ const CITY_CENTER: Record<string, [number, number]> = {
   "Gilroy": [37.0058, -121.5683],
 };
 
-function FitToPoints({ city, points }: { city: string; points: [number, number][] }) {
+function FitToPoints({
+  city,
+  points,
+  userPos,
+} : {
+  city: string;
+  points: [number, number][];
+  userPos?: { lat: number; lng: number } | null;
+}) {
   const map = useMap();
 
   useEffect(() => {
     const center = CITY_CENTER[city] ?? CITY_CENTER["San Jose"];
 
-    if (points.length > 0) {
-      map.fitBounds(points, { padding: [30, 30] });
+    const allPoints = [...points];
+    if (userPos) allPoints.push([userPos.lat, userPos.lng]);
+
+    if (allPoints.length > 0) {
+      map.fitBounds(allPoints, { padding: [30, 30] });
     } else {
       map.setView(center, 12);
     }
-  }, [city, points, map]);
+  }, [city, points, userPos, map]);
 
   return null;
 }
 
+
 export default function ResourceMap({
   city,
   items,
+  userPos,
 }: {
   city: string;
   items: Item[];
+  userPos?: { lat: number; lng: number } | null;
 }) {
   const center = useMemo(() => CITY_CENTER[city] ?? CITY_CENTER["San Jose"], [city]);
 
@@ -86,11 +100,32 @@ export default function ResourceMap({
   return (
     <div className="h-full w-full overflow-hidden rounded-xl border border-slate-200 bg-white">
     <MapContainer center={center} zoom={12} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
-        <TileLayer
-          attribution='&copy; OpenStreetMap contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <FitToPoints city={city} points={points} />
+      <TileLayer
+        attribution='&copy; OpenStreetMap contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <FitToPoints city={city} points={points} userPos={userPos} />
+
+      {/* USER LOCATION MARKER */}
+      {userPos && (
+        <CircleMarker
+          center={[userPos.lat, userPos.lng]}
+          radius={8}
+          pathOptions={{
+            color: "#2563eb",
+            fillColor: "#60a5fa",
+            fillOpacity: 0.9,
+          }}>
+          <Popup>
+            <div style={{ minWidth: 160 }}>
+              <div style={{ fontWeight: 700 }}>You are here</div>
+              <div style={{ fontSize: 12, marginTop: 4 }}>
+                Showing nearest resources
+              </div>
+            </div>
+          </Popup>
+        </CircleMarker>
+      )}
 
         {markers.map((it, idx) => {
             const cat = Array.isArray(it.categories) ? it.categories.join(", ") : "";

@@ -49,6 +49,50 @@ export default function ResultsPage() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
   const [previewText, setPreviewText] = useState<string | null>(null);
+    const [userPos, setUserPos] = useState<{ lat: number; lng: number } | null>(null);
+  const [locLoading, setLocLoading] = useState(false);
+  const [locErr, setLocErr] = useState<string | null>(null);
+
+  function toNum(x: number | string | undefined) {
+    const n = typeof x === "string" ? Number(x) : x;
+    return Number.isFinite(n as number) ? (n as number) : null;
+  }
+
+  function haversineMiles(lat1: number, lon1: number, lat2: number, lon2: number) {
+    const toRad = (d: number) => (d * Math.PI) / 180;
+    const R = 3958.8; // miles
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(a));
+  }
+
+  function requestLocation() {
+    setLocErr(null);
+
+    if (!("geolocation" in navigator)) {
+      setLocErr("Geolocation is not supported in this browser.");
+      return;
+    }
+
+    setLocLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserPos({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setLocLoading(false);
+      },
+      (err) => {
+        setLocLoading(false);
+        // friendly messages
+        if (err.code === err.PERMISSION_DENIED) setLocErr("Location permission denied.");
+        else if (err.code === err.TIMEOUT) setLocErr("Location request timed out.");
+        else setLocErr("Could not get your location.");
+      },
+      { enableHighAccuracy: false, timeout: 8000, maximumAge: 60_000 }
+    );
+  }
 
   const apiUrl = useMemo(() => {
     if (!city && !category && !lang) return null;
@@ -100,7 +144,36 @@ export default function ResultsPage() {
     };
   }, [apiUrl]);
 
-  // keep filters when going back (optional but nice)
+  const displayData = useMemo(() => {
+    // If user didn't allow location, keep original behavior
+    if (!userPos) return data as any[];
+
+    const withDistance = (data ?? [])
+      .map((r) => {
+        const lat = toNum(r.lat);
+        const lng = toNum(r.lng);
+        if (lat === null || lng === null) return { ...r, _distance: null as number | null };
+
+        return {
+          ...r,
+          _distance: haversineMiles(userPos.lat, userPos.lng, lat, lng),
+        };
+      })
+      // nearest first, missing lat/lng goes last
+      .sort((a: any, b: any) => {
+        const da = a._distance;
+        const db = b._distance;
+        if (da == null && db == null) return 0;
+        if (da == null) return 1;
+        if (db == null) return -1;
+        return da - db;
+      });
+
+    return withDistance;
+  }, [data, userPos]);
+
+
+  // keep filters when going back
   const backParams = useMemo(() => {
     const p = new URLSearchParams();
     if (city) p.set("city", city);
@@ -138,11 +211,40 @@ export default function ResultsPage() {
       <section className="mx-auto max-w-6xl px-6 py-10">
         {/* Header row */}
         <div className="flex items-center justify-between gap-4">
+          {/* LEFT SIDE */}
           <div>
-            <h2 className="text-2xl font-medium tracking-wide text-slate-900">RESULT:</h2>
+            <h2 className="text-2xl font-medium tracking-wide text-slate-900">
+              RESULT:
+            </h2>
             <p className="mt-1 text-sm text-slate-600">
-              {loading ? "Loading…" : err ? "Error loading results" : `Found ${data.length} result${data.length === 1 ? "" : "s"}.`}
+              {loading
+                ? "Loading…"
+                : err
+                ? "Error loading results"
+                : `Found ${displayData.length} result${
+                    displayData.length === 1 ? "" : "s"
+                  }.`}
             </p>
+          </div>
+
+          {/* RIGHT SIDE - Use My Location */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={requestLocation}
+              disabled={locLoading}
+              className="rounded-full bg-sky-200 px-5 py-2 text-sm font-semibold text-slate-800 shadow-sm ring-1 ring-sky-300 transition hover:bg-sky-100 disabled:opacity-60"
+            >
+              {userPos ? "Update Location": locLoading ? "Getting location…": "Use My Location"}
+            </button>
+
+            {userPos && (
+              <button
+                onClick={() => setUserPos(null)}
+                className="rounded-full bg-white px-5 py-2 text-sm font-semibold text-slate-800 shadow-sm ring-1 ring-slate-200 hover:bg-slate-50"
+              >
+                Clear
+              </button>
+            )}
           </div>
         </div>
 
@@ -167,13 +269,13 @@ export default function ResultsPage() {
             {loading ? <p className="text-slate-600">Loading results…</p> : null}
             {err ? <p className="text-red-600">{err}</p> : null}
 
-            {!loading && !err && data.length === 0 ? (
+            {!loading && !err && displayData.length === 0 ? (
               <p className="mt-6 text-slate-600">No results found matching your criteria.</p>
             ) : null}
 
-            {!loading && !err && data.length > 0 ? (
+            {!loading && !err && displayData.length > 0 ? (
               <div className="space-y-8">
-                {data.map((item, i) => {
+                {(displayData as any[]).map((item: any, i) => {
                   const firstCat = item.categories?.[0] ?? "No Category Match";
                   const zip = item.postal_code ?? "—";
                   const isOpen = expanded.has(i);
@@ -259,7 +361,7 @@ export default function ResultsPage() {
           {/* RIGHT: map (sticky) */}
           <aside className="lg:sticky lg:top-[92px]">
             <div className="h-[420px] overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-200 lg:h-[calc(100vh-160px)]">
-              <ResourceMap city={mapCity} items={data} />
+              <ResourceMap city={mapCity} items={displayData as any} userPos={userPos} />
             </div>
 
             <p className="mt-3 text-xs text-slate-500">
