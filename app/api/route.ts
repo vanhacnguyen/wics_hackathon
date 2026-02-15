@@ -18,7 +18,7 @@ export async function GET(req: Request) {
     incoming.searchParams.get("lang") ??
     "";
 
-  // ✅ No params → return empty JSON (never HTML)
+  // No params -> return empty JSON
   if (!city && !category && !lang) {
     return NextResponse.json({
       meta: { count: 0, note: "No filters provided. Add ?city=...&category=...&lang=..." },
@@ -40,15 +40,13 @@ export async function GET(req: Request) {
     const ct = r.headers.get("content-type") || "";
     const text = await r.text();
 
-    // ✅ Try parse JSON even if content-type is wrong (common for CGI)
+    // Try parse JSON even if content-type is wrong
     try {
       const parsed = JSON.parse(text);
 
-      // If upstream returns { meta, results } you're good.
-      // If it returns something else, still forward it so you can see it.
       return NextResponse.json(parsed, { status: 200 });
     } catch {
-      // Upstream not JSON → return debug but keep status 200 so frontend doesn't hard-fail
+      // Upstream not JSON -> return debug but keep status 200 so frontend doesn't fail
       return NextResponse.json({
         meta: {
           count: 0,
@@ -62,7 +60,7 @@ export async function GET(req: Request) {
       });
     }
   } catch (e: any) {
-    // Also return 200 with debug JSON (less annoying in browser)
+    // Return 200 with debug JSON
     return NextResponse.json({
       meta: {
         count: 0,

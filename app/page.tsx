@@ -1,12 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
-import Navbar from "./components/Navbar";
 
 export default function HomePage() {
     const router = useRouter();
     return (
-        <main className="min-h bg-white">
-        <Navbar />
+        <main className="min-h-[calc(100vh-72px)] bg-white flex flex-col">
 
         {/* Hero */}
         <section className="relative h-[360px] w-full">
@@ -14,12 +12,12 @@ export default function HomePage() {
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: "url(planting_tree.webp)" }}
             />
-            {/* dark overlay (optional, helps text pop) */}
+            {/* dark overlay */}
             <div className="absolute inset-0 bg-black/10" />
 
             {/* big HOME text */}
             <div className="relative mx-auto flex h-full max-w-6xl items-end pb-35">
-            <h1 className="text-6xl font-extrabold tracking-wide text-white drop-shadow-md">
+            <h1 className="text-6xl font-bold tracking-wide text-white drop-shadow-md">
                 HOME
             </h1>
             </div>

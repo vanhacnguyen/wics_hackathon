@@ -115,12 +115,12 @@ export default function ResultsPage() {
     <main className="min-h-[calc(100vh-72px)] bg-white">
       {/* HERO IMAGE */}
       <section
-        className="relative h-[200px] w-full bg-cover bg-center"
+        className="relative h-[300px] w-full bg-cover bg-center"
         style={{ backgroundImage: "url(/food.jpg)" }}>
         <div className="absolute inset-0 bg-black/30" />
 
         <div className="relative mx-auto flex h-full max-w-6xl items-center justify-between px-6">
-          <h1 className="text-3xl font-semibold text-white">
+          <h1 className="text-6xl font-semibold tracking-wide text-white drop-shadow-md">
             Results for {city || "All Cities"}
           </h1>
 
@@ -144,19 +144,11 @@ export default function ResultsPage() {
               {loading ? "Loading…" : err ? "Error loading results" : `Found ${data.length} result${data.length === 1 ? "" : "s"}.`}
             </p>
           </div>
-
-          {/* ✅ Back goes to SEARCH (not home) */}
-          <Link
-            href={backParams ? `/search?${backParams}` : "/search"}
-            className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"
-          >
-            ← Back to Search
-          </Link>
         </div>
 
         <div className="mt-4 h-px w-full bg-slate-300" />
 
-        {/* Optional debug */}
+        {/* DEBUG */}
         {!loading && !err && previewText ? (
           <details className="mt-6">
             <summary className="cursor-pointer text-sm text-slate-500">
@@ -169,7 +161,7 @@ export default function ResultsPage() {
         ) : null}
 
         {/* GRID: results + map */}
-        <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[1.0fr_1.0fr]">
           {/* LEFT: list */}
           <div>
             {loading ? <p className="text-slate-600">Loading results…</p> : null}

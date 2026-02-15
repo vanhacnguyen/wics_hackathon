@@ -84,17 +84,7 @@ export default function ResourceMap({
   const points = useMemo<[number, number][]>(() => markers.map((m) => [m.latNum as number, m.lngNum as number]), [markers]);
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: 380,
-        borderRadius: 12,
-        overflow: "hidden",
-        border: "1px solid #e0e0e0",
-        boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-        background: "#fff",
-      }}
-    >
+    <div className="h-full w-full overflow-hidden rounded-xl border border-slate-200 bg-white">
     <MapContainer center={center} zoom={12} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
         <TileLayer
           attribution='&copy; OpenStreetMap contributors'

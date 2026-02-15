@@ -46,7 +46,7 @@ function MultiSelect({ label, placeholder, options, values, onChange }: MultiSel
 
   return (
     <div ref={wrapRef} className="grid grid-cols-[140px_1fr] items-start gap-4">
-      <label className="pt-3 text-left text-lg font-medium text-black/90">{label}</label>
+      <label className="pt-3 text-left text-lg font-medium text-white/90">{label}</label>
 
       <div className="relative">
         {/* Input/chips box */}
@@ -130,12 +130,12 @@ interface SelectMenuProps {
 function SelectMenu({ label, value, options, onChange }: SelectMenuProps) {
   return (
     <div className="grid grid-cols-[140px_1fr] items-center gap-4">
-      <label className="text-left text-lg font-medium text-black/90">{label}</label>
+      <label className="text-left text-lg font-medium text-white/90">{label}</label>
       <div className="relative">
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full appearance-none rounded-xl bg-white/95 px-12 py-3 text-gray-800 shadow-sm outline-none ring-1 ring-white/30 focus:ring-2 focus:ring-sky-200"
+          className="w-full appearance-none rounded-xl bg-white/95 px-3 py-3 text-gray-800 shadow-sm outline-none ring-1 ring-white/30 focus:ring-2 focus:ring-sky-200"
         >
           <option value="">Select city</option>
           {options.map((opt) => (
@@ -182,44 +182,16 @@ export default function SearchPage() {
       try {
         setLoadingMeta(true);
 
-        const res = await fetch("/api?city=San%20Jose", { cache: "no-store" });
+        const res = await fetch("/api/meta", { cache: "no-store" });
         const json = await res.json();
-        const results: Resource[] = json.results ?? [];
-
-        const citySet = new Set<string>();
-        const catSet = new Set<string>();
-        const langSet = new Set<string>();
-
-        for (const r of results) {
-          if (r.city) citySet.add(r.city);
-
-          const cats = Array.isArray(r.categories)
-            ? r.categories
-            : String(r.categories ?? "")
-                .split(/[;,]/)
-                .map((s) => s.trim())
-                .filter(Boolean);
-          cats.forEach((c) => catSet.add(c));
-
-          const langs = Array.isArray(r.languages)
-            ? r.languages
-            : String(r.languages ?? "")
-                .split(/[;,]/)
-                .map((s) => s.trim())
-                .filter(Boolean);
-          langs.forEach((l) => langSet.add(l));
-        }
 
         if (cancelled) return;
 
-        const c1 = Array.from(citySet).sort();
-        const c2 = Array.from(catSet).sort();
-        const c3 = Array.from(langSet).sort();
-
-        setCities(c1);
-        setCategories(c2);
-        setLanguages(c3);
-
+        setCities((json.cities ?? []).sort());
+        setCategories((json.categories ?? []).sort());
+        setLanguages((json.languages ?? []).sort());
+      } catch (e) {
+        if (!cancelled) setError("Failed to load filter options.");
       } finally {
         if (!cancelled) setLoadingMeta(false);
       }
@@ -228,7 +200,6 @@ export default function SearchPage() {
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function onSearch() {
@@ -248,42 +219,51 @@ export default function SearchPage() {
   }
 
   return (
-    <main className="min-h-[calc(100vh-72px)] bg-gradient-to-br from-blue-200 via-sky-100 to-white">
-      <div className="mx-auto flex max-w-5xl flex-col items-center px-6 py-20">
-        <h1 className="text-center text-5xl font-extrabold tracking-wide text-black drop-shadow-sm">
-          FINDING RESOURCE
-        </h1>
+    <main
+      className="relative min-h-[calc(100vh-72px)] bg-cover bg-center"
+      style={{ backgroundImage: "url('/playground.jpg')" }}
+    >
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/40" />
 
-        <div className="mt-10 w-full max-w-3xl rounded-2xl bg-white/10 p-8 shadow-lg ring-1 ring-white/15 backdrop-blur-md">
-          {loadingMeta ? (
-            <p className="text-center text-black/80">Loading filters…</p>
-          ) : (
-            <div className="space-y-6">
-              <SelectMenu label="City" options={cities} value={city} onChange={setCity} />
-              <MultiSelect
-                label="Category"
-                placeholder="Select categories"
-                options={categories}
-                values={selectedCategories}
-                onChange={setSelectedCategories}
-              />
-              <MultiSelect
-                label="Language"
-                placeholder="Select languages"
-                options={languages}
-                values={selectedLanguages}
-                onChange={setSelectedLanguages}
-              />
-              <div className="pt-4 flex justify-center">
-                <button
-                  onClick={onSearch}
-                  className="w-full max-w-md rounded-full bg-sky-200 px-10 py-4 text-sm font-semibold tracking-[0.35em] text-slate-800 shadow-md ring-1 ring-sky-300 transition hover:scale-[1.01] hover:bg-sky-100"
-                >
-                  SEARCH
-                </button>
+      {/* Page content */}
+      <div className="relative z-10">
+        <div className="mx-auto flex max-w-5xl flex-col items-center px-6 py-20">
+          <h1 className="text-center text-5xl font-extrabold tracking-wide text-white drop-shadow-sm">
+            FINDING RESOURCE
+          </h1>
+
+          <div className="mt-10 w-full max-w-3xl rounded-2xl bg-white/10 p-8 shadow-lg ring-1 ring-white/15 backdrop-blur-md">
+            {loadingMeta ? (
+              <p className="text-center text-white/80">Loading filters…</p>
+            ) : (
+              <div className="space-y-6">
+                <SelectMenu label="City" options={cities} value={city} onChange={setCity} />
+                <MultiSelect
+                  label="Category"
+                  placeholder="Select categories"
+                  options={categories}
+                  values={selectedCategories}
+                  onChange={setSelectedCategories}
+                />
+                <MultiSelect
+                  label="Language"
+                  placeholder="Select languages"
+                  options={languages}
+                  values={selectedLanguages}
+                  onChange={setSelectedLanguages}
+                />
+                <div className="pt-4 flex justify-center">
+                  <button
+                    onClick={onSearch}
+                    className="w-full max-w-md rounded-full bg-sky-200 px-10 py-4 text-sm font-semibold tracking-[0.35em] text-slate-800 shadow-md ring-1 ring-sky-300 transition hover:scale-[1.01] hover:bg-sky-100"
+                  >
+                    SEARCH
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </main>
