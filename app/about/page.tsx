@@ -17,7 +17,7 @@ export default function AboutPage() {
       </section>
 
       {/* CONTENT */}
-      <section className="mx-auto max-w-6xl px-6 py-14">
+      <section className="mx-auto max-w-6xl px-7 py-14">
         {/* Mission & Vision */}
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-semibold text-slate-900">
